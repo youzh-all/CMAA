@@ -23,12 +23,12 @@ const text = {
   en: {
     title: 'Case evidence — inspect before dialogue', note: 'The Apprentice asks about this packet. Images, day-level sensor context, growth observations, and follow-up harvest data are shown without a status score or recommendation.', display: 'Display derivatives · originals remain in CMAA storage', day: '11 Dec 2025 · greenhouse 2',
     temp: 'Inside temperature', rh: 'Inside RH', co2: 'CO₂', water: 'Substrate water', ec: 'Substrate EC', growth: 'Latest growth observation', harvest: 'Same-day harvest outcome', observed: 'observed', followup: 'follow-up only', plantHeight: 'Plant height', leafCount: 'Leaf count', crown: 'Crown diameter', fruitSet: 'Fruit set count', marketable: 'Marketable rate', marketableCount: 'Marketable fruit', meanWeight: 'Mean fruit weight', brix: 'Mean Brix', source: 'Source-linked display packet', loading: 'Loading the selected case packet…', unavailable: 'Case packet could not be loaded.',
-    dailyChart: 'Within-day change', openWeek: 'Open previous 7-day view', priorWeek: 'Previous week', nextWeek: 'Next week', viewDate: 'Image observation date', range: 'daily mean · min–max'
+    dailyChart: 'Within-day change', openWeek: 'Open previous 7-day view', priorWeek: 'Previous week', nextWeek: 'Next week', viewDate: 'Image observation date', range: 'hourly mean'
   },
   ko: {
     title: '사례 근거 — 대화 전에 직접 확인', note: 'Apprentice는 이 패킷을 보고 질문함. 이미지, 일 단위 센서 맥락, 생육 관측, 후속 수확 자료를 상태점수나 추천 없이 함께 표시함', display: '표시용 파생본 · 원본은 CMAA 저장소에 보존', day: '2025년 12월 11일 · 2동',
     temp: '내부 온도', rh: '내부 상대습도', co2: 'CO₂', water: '배지 함수율', ec: '배지 EC', growth: '가장 최근 생육 관측', harvest: '당일 수확 결과', observed: '관측일', followup: '후속 결과만 사용', plantHeight: '초장', leafCount: '엽수', crown: '관부 직경', fruitSet: '착과수', marketable: '상품과율', marketableCount: '상품과 수', meanWeight: '상품과 평균중', brix: '평균 당도', source: '출처 연결 표시 패킷', loading: '선택된 사례 패킷을 불러오는 중…', unavailable: '사례 패킷을 불러오지 못함',
-    dailyChart: '당일 변화', openWeek: '이전 7일 변화 열기', priorWeek: '이전 주', nextWeek: '다음 주', viewDate: '이미지 관측일', range: '일평균 · 최솟값–최댓값'
+    dailyChart: '당일 변화', openWeek: '이전 7일 변화 열기', priorWeek: '이전 주', nextWeek: '다음 주', viewDate: '이미지 관측일', range: '시간별 평균'
   }
 } as const;
 
