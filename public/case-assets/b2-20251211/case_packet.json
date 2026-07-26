@@ -1,0 +1,323 @@
+{
+  "case_id": "b2-20251211",
+  "greenhouse_id": 2,
+  "anchor_date_local": "2025-12-11",
+  "scope_note": "Data display only. No status score, causal conclusion, or management recommendation is calculated.",
+  "image_views": [
+    {
+      "label": "AM · left",
+      "timestamp_local": "20251211090000",
+      "display_asset": "/case-assets/b2-20251211/am_left.jpg",
+      "source_image_id": "b2_batch01_20251211090000-left",
+      "source_path": "data/interim/images/building_2/batch_01/생육사진/20251211090000-left.png",
+      "display_note": "Display derivative; original image remains unchanged in CMAA raw/interim storage."
+    },
+    {
+      "label": "AM · right",
+      "timestamp_local": "20251211090000",
+      "display_asset": "/case-assets/b2-20251211/am_right.jpg",
+      "source_image_id": "b2_batch01_20251211090000-right",
+      "source_path": "data/interim/images/building_2/batch_01/생육사진/20251211090000-right.png",
+      "display_note": "Display derivative; original image remains unchanged in CMAA raw/interim storage."
+    },
+    {
+      "label": "PM · left",
+      "timestamp_local": "20251211140000",
+      "display_asset": "/case-assets/b2-20251211/pm_left.jpg",
+      "source_image_id": "b2_batch01_20251211140000-left",
+      "source_path": "data/interim/images/building_2/batch_01/생육사진/20251211140000-left.png",
+      "display_note": "Display derivative; original image remains unchanged in CMAA raw/interim storage."
+    },
+    {
+      "label": "PM · right",
+      "timestamp_local": "20251211140000",
+      "display_asset": "/case-assets/b2-20251211/pm_right.jpg",
+      "source_image_id": "b2_batch01_20251211140000-right",
+      "source_path": "data/interim/images/building_2/batch_01/생육사진/20251211140000-right.png",
+      "display_note": "Display derivative; original image remains unchanged in CMAA raw/interim storage."
+    }
+  ],
+  "sensor_day_summary": {
+    "inside_temperature_c": {
+      "mean": 13.63,
+      "min": 7.9,
+      "max": 24.4,
+      "n": 1440
+    },
+    "inside_relative_humidity_pct": {
+      "mean": 74.63,
+      "min": 52.0,
+      "max": 89.0,
+      "n": 1440
+    },
+    "co2_ppm": {
+      "mean": 390.15,
+      "min": 339.3,
+      "max": 756.71,
+      "n": 1440
+    },
+    "substrate_ec_ds_m": {
+      "mean": 0.4,
+      "min": 0.36,
+      "max": 0.44,
+      "n": 1440
+    },
+    "substrate_water_content_pct": {
+      "mean": 40.31,
+      "min": 39.62,
+      "max": 42.12,
+      "n": 1440
+    },
+    "substrate_temperature_c": {
+      "mean": 13.2,
+      "min": 10.81,
+      "max": 17.69,
+      "n": 1440
+    }
+  },
+  "sensor_hourly": [
+    {
+      "hour": "00:00",
+      "inside_temperature_c": 11.33,
+      "inside_relative_humidity_pct": 77.2,
+      "co2_ppm": 363.91,
+      "substrate_ec_ds_m": 0.37,
+      "substrate_water_content_pct": 39.87,
+      "substrate_temperature_c": 12.04
+    },
+    {
+      "hour": "01:00",
+      "inside_temperature_c": 11.22,
+      "inside_relative_humidity_pct": 75.88,
+      "co2_ppm": 361.63,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.87,
+      "substrate_temperature_c": 11.78
+    },
+    {
+      "hour": "02:00",
+      "inside_temperature_c": 11.32,
+      "inside_relative_humidity_pct": 75.03,
+      "co2_ppm": 358.42,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.85,
+      "substrate_temperature_c": 11.55
+    },
+    {
+      "hour": "03:00",
+      "inside_temperature_c": 11.4,
+      "inside_relative_humidity_pct": 76.53,
+      "co2_ppm": 357.65,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.84,
+      "substrate_temperature_c": 11.36
+    },
+    {
+      "hour": "04:00",
+      "inside_temperature_c": 11.35,
+      "inside_relative_humidity_pct": 79.53,
+      "co2_ppm": 357.53,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.8,
+      "substrate_temperature_c": 11.21
+    },
+    {
+      "hour": "05:00",
+      "inside_temperature_c": 11.6,
+      "inside_relative_humidity_pct": 82.05,
+      "co2_ppm": 356.96,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.78,
+      "substrate_temperature_c": 11.12
+    },
+    {
+      "hour": "06:00",
+      "inside_temperature_c": 11.79,
+      "inside_relative_humidity_pct": 83.48,
+      "co2_ppm": 357.77,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.75,
+      "substrate_temperature_c": 11.1
+    },
+    {
+      "hour": "07:00",
+      "inside_temperature_c": 11.86,
+      "inside_relative_humidity_pct": 85.32,
+      "co2_ppm": 424.04,
+      "substrate_ec_ds_m": 0.36,
+      "substrate_water_content_pct": 39.72,
+      "substrate_temperature_c": 11.13
+    },
+    {
+      "hour": "08:00",
+      "inside_temperature_c": 11.99,
+      "inside_relative_humidity_pct": 87.38,
+      "co2_ppm": 507.08,
+      "substrate_ec_ds_m": 0.37,
+      "substrate_water_content_pct": 40.11,
+      "substrate_temperature_c": 11.17
+    },
+    {
+      "hour": "09:00",
+      "inside_temperature_c": 14.12,
+      "inside_relative_humidity_pct": 83.48,
+      "co2_ppm": 453.13,
+      "substrate_ec_ds_m": 0.38,
+      "substrate_water_content_pct": 41.02,
+      "substrate_temperature_c": 11.4
+    },
+    {
+      "hour": "10:00",
+      "inside_temperature_c": 18.72,
+      "inside_relative_humidity_pct": 71.95,
+      "co2_ppm": 400.12,
+      "substrate_ec_ds_m": 0.4,
+      "substrate_water_content_pct": 41.75,
+      "substrate_temperature_c": 12.23
+    },
+    {
+      "hour": "11:00",
+      "inside_temperature_c": 19.67,
+      "inside_relative_humidity_pct": 69.6,
+      "co2_ppm": 480.35,
+      "substrate_ec_ds_m": 0.42,
+      "substrate_water_content_pct": 41.85,
+      "substrate_temperature_c": 13.53
+    },
+    {
+      "hour": "12:00",
+      "inside_temperature_c": 18.19,
+      "inside_relative_humidity_pct": 71.85,
+      "co2_ppm": 436.04,
+      "substrate_ec_ds_m": 0.43,
+      "substrate_water_content_pct": 41.51,
+      "substrate_temperature_c": 14.32
+    },
+    {
+      "hour": "13:00",
+      "inside_temperature_c": 20.95,
+      "inside_relative_humidity_pct": 64.45,
+      "co2_ppm": 435.8,
+      "substrate_ec_ds_m": 0.43,
+      "substrate_water_content_pct": 41.39,
+      "substrate_temperature_c": 15.15
+    },
+    {
+      "hour": "14:00",
+      "inside_temperature_c": 23.74,
+      "inside_relative_humidity_pct": 54.85,
+      "co2_ppm": 403.05,
+      "substrate_ec_ds_m": 0.43,
+      "substrate_water_content_pct": 41.1,
+      "substrate_temperature_c": 16.42
+    },
+    {
+      "hour": "15:00",
+      "inside_temperature_c": 21.03,
+      "inside_relative_humidity_pct": 57.9,
+      "co2_ppm": 374.73,
+      "substrate_ec_ds_m": 0.43,
+      "substrate_water_content_pct": 40.51,
+      "substrate_temperature_c": 17.44
+    },
+    {
+      "hour": "16:00",
+      "inside_temperature_c": 16.79,
+      "inside_relative_humidity_pct": 68.23,
+      "co2_ppm": 370.5,
+      "substrate_ec_ds_m": 0.44,
+      "substrate_water_content_pct": 40.04,
+      "substrate_temperature_c": 17.5
+    },
+    {
+      "hour": "17:00",
+      "inside_temperature_c": 12.66,
+      "inside_relative_humidity_pct": 77.25,
+      "co2_ppm": 372.82,
+      "substrate_ec_ds_m": 0.44,
+      "substrate_water_content_pct": 39.8,
+      "substrate_temperature_c": 16.72
+    },
+    {
+      "hour": "18:00",
+      "inside_temperature_c": 11.19,
+      "inside_relative_humidity_pct": 77.35,
+      "co2_ppm": 371.03,
+      "substrate_ec_ds_m": 0.43,
+      "substrate_water_content_pct": 39.79,
+      "substrate_temperature_c": 15.75
+    },
+    {
+      "hour": "19:00",
+      "inside_temperature_c": 9.9,
+      "inside_relative_humidity_pct": 78.23,
+      "co2_ppm": 374.21,
+      "substrate_ec_ds_m": 0.42,
+      "substrate_water_content_pct": 39.84,
+      "substrate_temperature_c": 14.7
+    },
+    {
+      "hour": "20:00",
+      "inside_temperature_c": 9.02,
+      "inside_relative_humidity_pct": 78.63,
+      "co2_ppm": 369.93,
+      "substrate_ec_ds_m": 0.41,
+      "substrate_water_content_pct": 39.92,
+      "substrate_temperature_c": 13.62
+    },
+    {
+      "hour": "21:00",
+      "inside_temperature_c": 8.88,
+      "inside_relative_humidity_pct": 74.67,
+      "co2_ppm": 363.1,
+      "substrate_ec_ds_m": 0.4,
+      "substrate_water_content_pct": 40.03,
+      "substrate_temperature_c": 12.61
+    },
+    {
+      "hour": "22:00",
+      "inside_temperature_c": 9.03,
+      "inside_relative_humidity_pct": 71.92,
+      "co2_ppm": 357.81,
+      "substrate_ec_ds_m": 0.39,
+      "substrate_water_content_pct": 40.1,
+      "substrate_temperature_c": 11.81
+    },
+    {
+      "hour": "23:00",
+      "inside_temperature_c": 9.31,
+      "inside_relative_humidity_pct": 68.32,
+      "co2_ppm": 355.94,
+      "substrate_ec_ds_m": 0.38,
+      "substrate_water_content_pct": 40.15,
+      "substrate_temperature_c": 11.16
+    }
+  ],
+  "growth_observation_date": "2025-12-10",
+  "growth_summary": {
+    "plant_height_cm": 19.92,
+    "leaf_count": 8.17,
+    "crown_diameter_mm": 17.02,
+    "open_flower_count": 0.5,
+    "unopened_flower_count": 1.38,
+    "fruit_set_count": 6.62,
+    "fruit_weight_g": null,
+    "fruit_brix": null
+  },
+  "harvest_date": "2025-12-11",
+  "harvest_summary": {
+    "total_fruit_count": 13.0,
+    "marketable_fruit_count": 10.0,
+    "marketable_fruit_rate": 0.769,
+    "marketable_mean_weight_g": 24.2,
+    "marketable_mean_brix": 13.96,
+    "total_fruit_weight_g": 242.0
+  },
+  "provenance": {
+    "sensor_source": "data/interim/tabular/sensor_actuator_building_2_clean.csv.gz",
+    "growth_source": "data/interim/tabular/growth_all_buildings_clean.csv.gz",
+    "harvest_source": "data/interim/tabular/fruit_harvest_all_buildings_clean.csv.gz",
+    "image_manifest": "data/interim/images/image_manifest_v1.csv",
+    "image_policy": "Only compressed display derivatives are included in the web repository; originals remain in CMAA storage."
+  }
+}

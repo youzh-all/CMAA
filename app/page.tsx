@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { CaseEvidence } from '@/components/CaseEvidence';
 
 type Lang = 'en' | 'ko';
 type ChatMessage = { id: string; role: 'assistant' | 'master'; text: string };
@@ -16,7 +17,7 @@ const copy = {
     private: 'No raw CEA data exposed',
     workflow: 'Workflow', case: 'Case', contextLabel: 'Context', windowLabel: 'Window', statusLabel: 'Status', global: 'Global', local: 'Local', globalStatus: 'Source registry pending', localStatus: 'Data-feasibility review', archive: 'Archive', chat: 'Master dialogue', evidence: 'Evidence packet', records: 'Saved review outputs',
     stage1: 'Master-first', stage2: 'Structure', stage3: 'Challenge', stage4: 'Boundary', stage5: 'Specification', stage6: 'Provenance',
-    caseTitle: 'Selected case episode', context: 'Strawberry · greenhouse 2', window: 'Pre-anchor evidence window', qc: 'QC-aware',
+    caseTitle: 'B2 · 11 Dec 2025', context: 'Strawberry · greenhouse 2', window: 'Pre-anchor evidence window', qc: 'QC-aware',
     chatTitle: 'Start with the Master’s own judgement', chatDesc: 'CMAA does not reveal an indicator candidate until the Master records an independent interpretation.',
     quick: 'Ask CMAA', placeholder: 'Type the Master observation, question, or correction…', send: 'Send',
     candidate: 'Candidate relation', candidateName: 'Vegetative support ↔ reproductive load', candidateDesc: 'A hypothesis seed only. It is not an approved indicator, threshold, diagnosis, or action recommendation.',
@@ -37,7 +38,7 @@ const copy = {
     prototype: '상호작용 프로토타입', private: '원본 CEA 데이터 비노출',
     workflow: '워크플로우', case: '사례', contextLabel: '맥락', windowLabel: '관측창', statusLabel: '상태', global: '글로벌', local: '현장', globalStatus: '출처 목록 연결 예정', localStatus: '데이터 가능성 검토', archive: '기록 보관함', chat: 'Master 대화', evidence: '근거 패킷', records: '저장된 검토 결과',
     stage1: 'Master 우선', stage2: '구조화', stage3: '후보 검토', stage4: '경계 검토', stage5: '정의서', stage6: '근거 이력',
-    caseTitle: '선택된 사례 에피소드', context: '딸기 · 2동', window: '판단시점 이전 관측창', qc: 'QC 고려',
+    caseTitle: '2동 · 2025년 12월 11일', context: '딸기 · 2동', window: '판단시점 이전 관측창', qc: 'QC 고려',
     chatTitle: 'Master의 독립 판단부터 기록', chatDesc: 'Master가 독립적으로 해석을 기록하기 전에는 CMAA가 지표 후보를 제시하지 않음',
     quick: 'CMAA에 질문', placeholder: 'Master 관찰, 질문 또는 수정 의견을 입력…', send: '전송',
     candidate: '지표 후보 관계', candidateName: '영양생장 지지 ↔ 생식부하', candidateDesc: '단지 가설 시드임. 승인된 지표·임계값·진단·행동 추천이 아님',
@@ -99,6 +100,8 @@ export default function Home() {
     <nav className="steps" aria-label={t.workflow}>{stages.map((key, index) => <button key={key} onClick={() => setStage(index)} className={stage === index ? 'active' : index < stage ? 'done' : ''}><span>0{index + 1}</span><b>{t[key]}</b></button>)}</nav>
 
     <section className="case-strip"><div><span>{t.case.toUpperCase()}</span><b>{t.caseTitle}</b></div><div><span>{t.contextLabel.toUpperCase()}</span><b>{t.context}</b></div><div><span>{t.windowLabel.toUpperCase()}</span><b>{t.window}</b></div><div><span>{t.statusLabel.toUpperCase()}</span><b className="good">{t.qc}</b></div></section>
+
+    <CaseEvidence lang={lang} />
 
     <section className="workspace">
       <aside className="side evidence"><div className="section-label">{t.evidence}</div><h2>{t.evidenceTitle}</h2>
