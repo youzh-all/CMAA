@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { CaseEvidence } from '@/components/CaseEvidence';
+import { CompositeIndicatorStudio } from '@/components/CompositeIndicatorStudio';
 
 type Lang = 'en' | 'ko';
 type ChatMessage = { id: string; role: 'assistant' | 'master'; text: string };
@@ -122,6 +123,7 @@ export default function Home() {
     <section className="case-strip"><div><span>{t.case.toUpperCase()}</span><b>{t.caseTitle}</b></div><div><span>{t.contextLabel.toUpperCase()}</span><b>{t.context}</b></div><div><span>{t.windowLabel.toUpperCase()}</span><b>{t.window}</b></div><div><span>{t.statusLabel.toUpperCase()}</span><b className="good">{t.qc}</b></div></section>
 
     <CaseEvidence lang={lang} />
+    <CompositeIndicatorStudio lang={lang} masterCue={lastMasterNote} />
 
     <section id="feature-qc" className="feature-qc"><p className="section-label">Feature & QC</p><h2>{lang === 'ko' ? '관측·proxy·맥락의 경계' : 'Observation, proxy and context boundary'}</h2><p>{lang === 'ko' ? '현재 시간별 환경·근권 기록은 직접 관측 및 시간정렬 맥락임. AM/PM × 좌/우 이미지는 분리 보존된 proxy이며, 아직 segmentation 결과나 식물 전체 상태로 승격되지 않음' : 'Hourly environment/root-zone records are direct measurements and time-aligned context. AM/PM × left/right images remain separately preserved proxies; they are not yet segmentation outputs or whole-plant state.'}</p></section>
     <section className="workspace">
