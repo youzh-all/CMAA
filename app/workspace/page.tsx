@@ -7,6 +7,7 @@ type Lang = 'en' | 'ko';
 type ChatMessage = { id: string; role: 'assistant' | 'master'; text: string };
 type Decision = 'retain' | 'revise' | 'split' | 'merge' | 'reject' | 'defer' | '';
 type SavedRecord = { id: string; time: string; decision: Decision; note: string };
+type ServerDraft = { id: string; status: string; decision: Decision; reviewerRole: string; createdAt: string };
 
 const copy = {
   en: {
@@ -64,6 +65,8 @@ export default function Home() {
   const [decision, setDecision] = useState<Decision>('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [records, setRecords] = useState<SavedRecord[]>([]);
+  const [serverDrafts, setServerDrafts] = useState<ServerDraft[]>([]);
+  const [draftStorage, setDraftStorage] = useState<'loading' | 'available' | 'not_configured'>('loading');
   const [notice, setNotice] = useState('');
   const t = copy[lang];
 
@@ -76,14 +79,30 @@ export default function Home() {
   useEffect(() => { window.localStorage.setItem('cmaa-lang', lang); }, [lang]);
   useEffect(() => { window.localStorage.setItem('cmaa-review-records', JSON.stringify(records)); }, [records]);
   useEffect(() => { setMessages([{ id: 'welcome', role: 'assistant', text: t.welcome }]); }, [lang]);
+  useEffect(() => { fetch('/api/cmaa/review-drafts?caseId=b2-20251211').then(async (response) => { const payload = await response.json(); setServerDrafts(payload.drafts || []); setDraftStorage(response.ok ? 'available' : 'not_configured'); }).catch(() => setDraftStorage('not_configured')); }, []);
 
   const recordSummary = useMemo(() => lastMasterNote.trim() || '—', [lastMasterNote]);
   const addPrompt = (prompt: string) => setMessages((items) => [...items, { id: crypto.randomUUID(), role: 'master', text: prompt }, { id: crypto.randomUUID(), role: 'assistant', text: t.acknowledgement }]);
-  const submit = (event: FormEvent) => { event.preventDefault(); const text = draft.trim(); if (!text) return; setLastMasterNote(text); addPrompt(text); setDraft(''); };
-  const saveRecord = () => {
+  const submit = async (event: FormEvent) => {
+    event.preventDefault(); const text = draft.trim(); if (!text) return;
+    setLastMasterNote(text); setMessages((items) => [...items, { id: crypto.randomUUID(), role: 'master', text }]); setDraft('');
+    try {
+      const response = await fetch('/api/cmaa/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'user', content: text }] }) });
+      const payload = await response.json();
+      const reply = response.ok && payload.message ? payload.message : t.acknowledgement;
+      setMessages((items) => [...items, { id: crypto.randomUUID(), role: 'assistant', text: reply }]);
+    } catch { setMessages((items) => [...items, { id: crypto.randomUUID(), role: 'assistant', text: t.acknowledgement }]); }
+  };
+  const saveRecord = async () => {
     if (!decision) { setNotice(t.decisionRequired); return; }
-    setRecords((items) => [{ id: crypto.randomUUID(), time: new Date().toLocaleString(lang === 'ko' ? 'ko-KR' : 'en-GB'), decision, note: recordSummary }, ...items]);
-    setNotice(t.saved); setStage(5);
+    const record = { id: crypto.randomUUID(), time: new Date().toLocaleString(lang === 'ko' ? 'ko-KR' : 'en-GB'), decision, note: recordSummary };
+    setRecords((items) => [record, ...items]);
+    try {
+      const response = await fetch('/api/cmaa/review-drafts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ caseId: 'b2-20251211', reviewerRole: 'master', decision, note: recordSummary }) });
+      const payload = await response.json();
+      setNotice(response.ok ? `${t.saved} · draft ${payload.id.slice(0, 8)}` : `${t.saved} · ${payload.code || 'local draft'}`);
+    } catch { setNotice(`${t.saved} · local draft`); }
+    setStage(5);
   };
 
   return <main className="shell">
@@ -92,6 +111,7 @@ export default function Home() {
       <div className="top-actions"><span className="status-dot">{t.prototype}</span><button className="language" onClick={() => setLang(lang === 'en' ? 'ko' : 'en')}>{t.language}</button></div>
     </header>
 
+    <nav className="workspace-nav" aria-label="CMAA workspace navigation"><a href="#case-evidence">Evidence</a><a href="#data-explorer">Data explorer</a><a href="#feature-qc">Feature & QC</a><a href="#apprentice-dialogue">Apprentice</a><a href="#review-history">Review</a></nav>
     <section className="intro">
       <div><p className="eyebrow">{t.eyebrow}</p><h1>{t.title}</h1><p className="subtitle">{t.subtitle}</p></div>
       <div className="intro-note"><b>{t.private}</b><span>{t.systemNote}</span></div>
@@ -103,13 +123,14 @@ export default function Home() {
 
     <CaseEvidence lang={lang} />
 
+    <section id="feature-qc" className="feature-qc"><p className="section-label">Feature & QC</p><h2>{lang === 'ko' ? '관측·proxy·맥락의 경계' : 'Observation, proxy and context boundary'}</h2><p>{lang === 'ko' ? '현재 시간별 환경·근권 기록은 직접 관측 및 시간정렬 맥락임. AM/PM × 좌/우 이미지는 분리 보존된 proxy이며, 아직 segmentation 결과나 식물 전체 상태로 승격되지 않음' : 'Hourly environment/root-zone records are direct measurements and time-aligned context. AM/PM × left/right images remain separately preserved proxies; they are not yet segmentation outputs or whole-plant state.'}</p></section>
     <section className="workspace">
       <aside className="side evidence"><div className="section-label">{t.evidence}</div><h2>{t.evidenceTitle}</h2>
         {[[t.environment,t.environmentDesc],[t.root,t.rootDesc],[t.growth,t.growthDesc],[t.image,t.imageDesc],[t.harvest,t.harvestDesc]].map(([name, desc], i) => <div className="evidence-row" key={name}><span>{String(i + 1).padStart(2,'0')}</span><div><b>{name}</b><small>{desc}</small></div></div>)}
         <p className="guard">{t.private} · raw files remain outside Vercel</p>
       </aside>
 
-      <section className="center">
+      <section id="apprentice-dialogue" className="center">
         <div className="chat-head"><div><p className="section-label">{t.chat}</p><h2>{t.chatTitle}</h2><p>{t.chatDesc}</p></div><span className="stage-pill">{t[stages[stage]]}</span></div>
         <div className="quick"><span>{t.quick}</span><button onClick={() => addPrompt(t.prompt1)}>{t.prompt1}</button><button onClick={() => addPrompt(t.prompt2)}>{t.prompt2}</button><button onClick={() => addPrompt(t.prompt3)}>{t.prompt3}</button></div>
         <div className="messages">{messages.map((message) => <article key={message.id} className={`message ${message.role}`}><span>{message.role === 'assistant' ? 'CMAA' : 'MASTER'}</span><p>{message.text}</p></article>)}</div>
@@ -123,6 +144,7 @@ export default function Home() {
       </aside>
     </section>
 
-    <section className="records"><div className="records-heading"><div><p className="section-label">{t.archive}</p><h2>{t.records}</h2></div>{records.length > 0 && <button onClick={() => setRecords([])}>{t.clear}</button>}</div>{records.length === 0 ? <div className="empty">{t.noRecords}</div> : <div className="record-list">{records.map((record) => <article key={record.id}><span>{t.savedLabel} · {record.time}</span><b>{t[record.decision as Exclude<Decision, ''>]}</b><p>{record.note}</p></article>)}</div>}</section>
+    <section className="server-drafts"><p className="section-label">Provenance</p><h2>{lang === 'ko' ? '서버 검토 초안' : 'Server review drafts'}</h2><p>{draftStorage === 'loading' ? 'Loading draft storage…' : draftStorage === 'available' ? 'Drafts are private records pending researcher adjudication.' : 'Draft storage is not configured; this browser still retains local draft records only.'}</p>{serverDrafts.map((draft) => <article key={draft.id}><span>{draft.status} · {draft.reviewerRole} · {new Date(draft.createdAt).toLocaleString()}</span><b>{t[draft.decision as Exclude<Decision, ''>]}</b></article>)}</section>
+    <section id="review-history" className="records"><div className="records-heading"><div><p className="section-label">{t.archive}</p><h2>{t.records}</h2></div>{records.length > 0 && <button onClick={() => setRecords([])}>{t.clear}</button>}</div>{records.length === 0 ? <div className="empty">{t.noRecords}</div> : <div className="record-list">{records.map((record) => <article key={record.id}><span>{t.savedLabel} · {record.time}</span><b>{t[record.decision as Exclude<Decision, ''>]}</b><p>{record.note}</p></article>)}</div>}</section>
   </main>;
 }
