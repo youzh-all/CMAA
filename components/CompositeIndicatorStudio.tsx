@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type Lang = 'en' | 'ko';
 type CandidateId = 'VRBI' | 'IFLI' | 'FSMSI';
@@ -20,16 +20,29 @@ export function CompositeIndicatorStudio({ lang, masterCue }: { lang: Lang; mast
   const t = labels[lang];
   const [candidateId, setCandidateId] = useState<CandidateId>('VRBI');
   const [selected, setSelected] = useState<string[]>([]);
+  const [bridgeState, setBridgeState] = useState<'idle' | 'loading' | 'connected' | 'unavailable'>('idle');
+  const [serverProposalIds, setServerProposalIds] = useState<string[]>([]);
   const cueReady = Boolean(masterCue.trim());
   const candidate = candidates[candidateId];
   const selectedComponents = useMemo(() => selected.filter((item) => candidate.components.includes(item)), [candidate.components, selected]);
+  useEffect(() => {
+    if (!cueReady) { setBridgeState('idle'); setServerProposalIds([]); return; }
+    const controller = new AbortController();
+    setBridgeState('loading');
+    fetch('/api/cmaa/candidate-proposals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ caseId: 'B2-20251211', masterCue }), signal: controller.signal })
+      .then(async (response) => ({ ok: response.ok, payload: await response.json() }))
+      .then(({ ok, payload }) => { if (!ok) throw new Error(payload?.code || 'bridge_unavailable'); setServerProposalIds((payload.proposals || []).map((item: { candidate_id: string }) => item.candidate_id)); setBridgeState('connected'); })
+      .catch(() => { if (!controller.signal.aborted) setBridgeState('unavailable'); });
+    return () => controller.abort();
+  }, [cueReady, masterCue]);
+  const bridgeLabel = bridgeState === 'connected' ? '2222 server proposal verified' : bridgeState === 'loading' ? 'Checking 2222 candidate service…' : bridgeState === 'unavailable' ? 'Server bridge not configured — local UI preview only' : t.cueEmpty;
   const toggle = (component: string) => setSelected((items) => items.includes(component) ? items.filter((item) => item !== component) : [...items, component]);
   return <section className="indicator-studio" id="indicator-studio">
-    <div className="indicator-studio-head"><div><p className="section-label">{t.eyebrow}</p><h2>{t.title}</h2></div><span>{cueReady ? t.cueReady : t.cueEmpty}</span></div>
+    <div className="indicator-studio-head"><div><p className="section-label">{t.eyebrow}</p><h2>{t.title}</h2></div><span>{cueReady ? `${t.cueReady} · ${bridgeLabel}` : t.cueEmpty}</span></div>
     <ol className="indicator-flow">{[t.cue, t.proposal, t.select, t.rounds, t.spec, t.build, t.apply].map((label, index) => <li key={label} className={cueReady && index < 3 ? 'ready' : ''}>{label}</li>)}</ol>
     {!cueReady ? <div className="indicator-gate">{t.cueEmpty}</div> : <div className="indicator-grid">
       <article className="cue-card"><span>{t.cue}</span><p>{masterCue}</p></article>
-      <article className="candidate-card"><span>{t.proposal}</span><h3>{t.candidates}</h3><div className="candidate-buttons">{(Object.keys(candidates) as CandidateId[]).map((id) => <button key={id} className={candidateId === id ? 'selected' : ''} onClick={() => { setCandidateId(id); setSelected([]); }}><b>{id}</b><small>{lang === 'ko' ? candidates[id].ko : candidates[id].name}</small><em>{t.status}</em></button>)}</div></article>
+      <article className="candidate-card"><span>{t.proposal}</span><h3>{t.candidates}</h3><div className="candidate-buttons">{(Object.keys(candidates) as CandidateId[]).filter((id) => bridgeState !== 'connected' || serverProposalIds.includes(id)).map((id) => <button key={id} className={candidateId === id ? 'selected' : ''} onClick={() => { setCandidateId(id); setSelected([]); }}><b>{id}</b><small>{lang === 'ko' ? candidates[id].ko : candidates[id].name}</small><em>{t.status}</em></button>)}</div></article>
       <article className="selection-card"><span>{t.select}</span><h3>{lang === 'ko' ? candidate.ko : candidate.name}</h3><p>{candidate.construct}</p><small>{t.selectHint}</small><div className="component-list">{candidate.components.map((component) => <label key={component}><input type="checkbox" checked={selectedComponents.includes(component)} onChange={() => toggle(component)} /> <span>{component}</span></label>)}</div></article>
       <article className="boundary-card"><span>{t.rounds}</span><h3>{t.boundary}</h3><p>{t.boundaryText}</p><dl><dt>Required linkage</dt><dd>{candidate.linkage}</dd><dt>Current status</dt><dd>{t.status}</dd></dl></article>
       <article className="spec-card"><span>{t.spec}</span><h3>{t.specification}</h3><dl><dt>Candidate</dt><dd>{candidateId}</dd><dt>{t.selected}</dt><dd>{selectedComponents.length ? selectedComponents.join(' · ') : '—'}</dd><dt>{t.formula}</dt><dd>{t.blocked}</dd></dl></article>
