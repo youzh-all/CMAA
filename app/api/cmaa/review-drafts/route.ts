@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { list, put } from '@vercel/blob';
+import { get, list, put } from '@vercel/blob';
 
 const decisions = new Set(['retain', 'revise', 'split', 'merge', 'reject', 'defer']);
 
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   const caseId = new URL(request.url).searchParams.get('caseId') || 'b2-20251211';
   const result = await list({ prefix: `cmaa/review-drafts/${caseId}/`, limit: 50 });
   const drafts = await Promise.all(result.blobs.map(async (blob) => {
-    try { const response = await fetch(blob.url, { cache: 'no-store' }); const item = await response.json(); return { id: item.id, status: item.status, decision: item.decision, reviewerRole: item.reviewerRole, createdAt: item.createdAt, caseId: item.caseId }; }
+    try { const found = await get(blob.url, { access: 'private', useCache: false }); if (!found) return null; const item = await new Response(found.stream).json(); return { id: item.id, status: item.status, decision: item.decision, reviewerRole: item.reviewerRole, createdAt: item.createdAt, caseId: item.caseId }; }
     catch { return null; }
   }));
   return NextResponse.json({ caseId, storage: 'vercel_blob_private', drafts: drafts.filter(Boolean).sort((a, b) => String(b?.createdAt).localeCompare(String(a?.createdAt))) });
