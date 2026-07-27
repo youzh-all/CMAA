@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const candidateApiUrl = process.env.CMAA_CANDIDATE_API_URL;
+const candidateApiUrl = process.env.CMAA_CANDIDATE_API_URL || process.env.CMAA_REVIEW_QUEUE_URL?.replace(/\/v1\/cmaa\/review-draft-events\/?$/, '');
 const candidateApiToken = process.env.CMAA_CANDIDATE_API_TOKEN || process.env.CMAA_REVIEW_QUEUE_TOKEN;
 
 export async function POST(request: Request) {
