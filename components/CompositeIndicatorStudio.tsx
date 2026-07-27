@@ -44,7 +44,7 @@ export function CompositeIndicatorStudio({ lang, masterCue }: { lang: Lang; mast
   const toggle = (component: string) => { setComponentsSaved(false); setSelected((items) => items.includes(component) ? items.filter((item) => item !== component) : [...items, component]); };
   const saveSpecification = async () => {
     setSpecState('saving');
-    try { const response = await fetch('/api/cmaa/specification-drafts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ candidateId, selectedComponents }) }); if (!response.ok) throw new Error(); setSpecState('saved'); } catch { setSpecState('error'); }
+    try { const response = await fetch('/api/cmaa/specification-drafts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ caseId: 'B2-20251211', candidateId, selectedComponents, masterCue, boundaryNote }) }); if (!response.ok) throw new Error(); setSpecState('saved'); } catch { setSpecState('error'); }
   };
   return <section className="indicator-studio" id="indicator-studio">
     <div className="indicator-studio-head"><div><p className="section-label">{t.eyebrow}</p><h2>{t.title}</h2></div><span>{cueReady ? `${t.cueReady} · ${bridgeLabel}` : t.cueEmpty}</span></div>
