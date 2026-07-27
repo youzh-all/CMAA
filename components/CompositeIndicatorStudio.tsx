@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { ModelRequirementCard } from './ModelRequirementCard';
 
 type Lang = 'en' | 'ko';
 type CandidateId = 'VRBI' | 'IFLI' | 'FSMSI';
@@ -57,6 +58,7 @@ export function CompositeIndicatorStudio({ lang, masterCue }: { lang: Lang; mast
       <article className="selection-card"><span>{t.select}</span><h3>{lang === 'ko' ? candidate.ko : candidate.name}</h3><p>{candidate.construct}</p><small>{t.selectHint}</small><div className="component-list">{candidate.components.map((component) => <label key={component}><input type="checkbox" checked={selectedComponents.includes(component)} onChange={() => toggle(component)} /> <span>{component}</span></label>)}</div><button className="studio-action" disabled={!candidateConfirmed || !selectedComponents.length} onClick={() => setComponentsSaved(true)}>{lang === 'ko' ? '구성요소 선택 저장' : 'Save component selection'}</button>{componentsSaved && <p className="studio-saved">✓ {lang === 'ko' ? '구성요소 선택이 기록되었습니다.' : 'Component selection recorded.'}</p>}</article>
       <article className="boundary-card"><span>{t.rounds}</span><h3>{t.boundary}</h3><p>{t.boundaryText}</p><textarea value={boundaryNote} onChange={(event) => { setBoundaryNote(event.target.value); setReviewSaved(false); }} placeholder={lang === 'ko' ? '반례·비적용 조건·재확인 기준을 기록하세요.' : 'Record counterexamples, boundaries, and recheck conditions.'} /><button className="studio-action" disabled={!boundaryNote.trim()} onClick={() => setReviewSaved(true)}>{lang === 'ko' ? '검토 기록 저장' : 'Save review note'}</button>{reviewSaved && <p className="studio-saved">✓ {lang === 'ko' ? '검토 기록이 저장 대기 상태입니다.' : 'Review note is ready to save.'}</p>}<dl><dt>Required linkage</dt><dd>{candidate.linkage}</dd><dt>Current status</dt><dd>{t.status}</dd></dl></article>
       <article className="spec-card"><span>{t.spec}</span><h3>{t.specification}</h3><dl><dt>Candidate</dt><dd>{candidateId}</dd><dt>{t.selected}</dt><dd>{selectedComponents.length ? selectedComponents.join(' · ') : '—'}</dd><dt>{t.formula}</dt><dd>{t.blocked}</dd></dl><button className="studio-action" disabled={!candidateConfirmed || !componentsSaved || !reviewSaved || specState === 'saving'} onClick={saveSpecification}>{specState === 'saving' ? (lang === 'ko' ? '정의서 저장 중…' : 'Saving specification…') : (lang === 'ko' ? '지표 정의서 저장' : 'Save indicator specification')}</button>{specState === 'saved' && <p className="studio-saved">✓ {lang === 'ko' ? '정의서 초안이 2222 server에 저장되었습니다.' : 'Specification draft saved on the 2222 server.'}</p>}{specState === 'error' && <p className="studio-error">{lang === 'ko' ? `Server bridge 오류: ${specError || 'unknown'}. 연구 기록에는 저장되지 않았습니다.` : `Server bridge error: ${specError || 'unknown'}. No research record was saved.`}</p>}</article>
+      <ModelRequirementCard candidateId={candidateId} lang={lang} />
       <article className="server-card"><span>{t.build}</span><p>{t.buildText}</p><span>{t.apply}</span><p>{t.applyText}</p></article>
     </div>}
   </section>;
